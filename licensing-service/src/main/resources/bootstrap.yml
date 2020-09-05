@@ -1,4 +1,10 @@
 spring:
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+
   application:
     name: licensingservice
   profiles:
@@ -7,7 +13,6 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
-  jpa:
-    properties:
-      hibernate.temp.use_jdbc_metadata_defaults: false
+
+
 
