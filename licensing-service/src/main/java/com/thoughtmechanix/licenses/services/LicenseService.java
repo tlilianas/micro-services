@@ -18,12 +18,12 @@ public class LicenseService {
     @Autowired
     private ServiceConfig config;
 
-    public List<License> getLicencesByOrg(String organizationId){
+    public List<License> getLicensesByOrg(String organizationId){
         return licenseRepository.findByOrganizationId(organizationId);
     }
 
     public License getLicense(String organizationId, String licenseId){
-        License license = licenseRepository.findByLicenseAndOrganizationId(organizationId, licenseId);
+        License license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
         return license.withComment(config.getExampleProperty());
     }
 
@@ -31,4 +31,13 @@ public class LicenseService {
         license.withId(UUID.randomUUID().toString());
         licenseRepository.save(license);
     }
+
+    public void updateLicense(License license){
+        licenseRepository.save(license);
+    }
+
+    public void deleteLicense(License license){
+        licenseRepository.delete( license.getLicenseId());
+    }
+
 }

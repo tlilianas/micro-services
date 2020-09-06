@@ -1,22 +1,27 @@
 package com.thoughtmechanix.licenses.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="licenses")
+@Table(name = "licenses")
 public class License{
     @Id
     @Column(name = "license_id", nullable = false)
-    private String id;
+    private String licenseId;
+
     @Column(name = "organization_id", nullable = false)
     private String organizationId;
+
     @Column(name = "product_name", nullable = false)
     private String productName;
+
     @Column(name = "license_type", nullable = false)
     private String licenseType;
+
     @Column(name = "license_max", nullable = false)
     private Integer licenseMax;
 
@@ -26,12 +31,30 @@ public class License{
     @Column(name="comment")
     private String comment;
 
-    public String getId() {
-        return id;
+
+    public Integer getLicenseMax() {
+        return licenseMax;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setLicenseMax(Integer licenseMax) {
+        this.licenseMax = licenseMax;
+    }
+
+    public Integer getLicenseAllocated() {
+        return licenseAllocated;
+    }
+
+    public void setLicenseAllocated(Integer licenseAllocated) {
+        this.licenseAllocated = licenseAllocated;
+    }
+
+
+    public String getLicenseId() {
+        return licenseId;
+    }
+
+    public void setLicenseId(String licenseId) {
+        this.licenseId = licenseId;
     }
 
     public String getOrganizationId() {
@@ -58,22 +81,6 @@ public class License{
         this.licenseType = licenseType;
     }
 
-    public Integer getLicenseMax() {
-        return licenseMax;
-    }
-
-    public void setLicenseMax(Integer licenseMax) {
-        this.licenseMax = licenseMax;
-    }
-
-    public Integer getLicenseAllocated() {
-        return licenseAllocated;
-    }
-
-    public void setLicenseAllocated(Integer licenseAllocated) {
-        this.licenseAllocated = licenseAllocated;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -83,7 +90,7 @@ public class License{
     }
 
     public License withId(String id){
-        this.setId( id );
+        this.setLicenseId(id);
         return this;
     }
 
