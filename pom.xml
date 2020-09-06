@@ -8,6 +8,7 @@
         <module>licensing-service</module>
         <module>confsvr</module>
         <module>eurekasvr</module>
+        <module>organization-service</module>
     </modules>
     <artifactId>tmx-parent-pom</artifactId>
     <packaging>pom</packaging>
