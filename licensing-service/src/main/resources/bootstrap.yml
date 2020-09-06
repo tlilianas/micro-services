@@ -14,5 +14,7 @@ spring:
     config:
       uri: http://localhost:8888
 
+encrypt:
+  key: IMSYMMETRIC
 
 
