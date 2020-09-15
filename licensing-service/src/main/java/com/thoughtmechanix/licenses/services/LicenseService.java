@@ -1,5 +1,7 @@
 package com.thoughtmechanix.licenses.services;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.thoughtmechanix.licenses.clients.OrganizationDiscoveryClient;
 import com.thoughtmechanix.licenses.clients.OrganizationFeignClient;
 import com.thoughtmechanix.licenses.clients.OrganizationRestTemplateClient;
@@ -10,7 +12,9 @@ import com.thoughtmechanix.licenses.repository.LicenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -66,8 +70,36 @@ public class LicenseService {
                 .withComment(config.getExampleProperty());
     }
 
+    private void randomlyRunLong(){
+        Random rand = new Random();
+        int randomNum = rand.nextInt((3 - 1) + 1) + 1;
+        if (randomNum==3) sleep();
+    }
+    private void sleep(){
+        try {
+            Thread.sleep(11000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @HystrixCommand(fallbackMethod = "buildFallbackLicenseList", threadPoolKey = "licenseByOrgThreadPool",
+            threadPoolProperties = {@HystrixProperty(name = "coreSize",value="30"),
+                                    @HystrixProperty(name="maxQueueSize", value="10")}
+                            )
     public List<License> getLicensesByOrg(String organizationId){
+        randomlyRunLong(); // purposely trigger hystrix fallblack for testing reasons
         return licenseRepository.findByOrganizationId( organizationId );
+    }
+
+    private List<License> buildFallbackLicenseList(String organizationId){
+        List<License> fallbackList = new ArrayList<>();
+        License license = new License()
+                .withId("0000000-00-00000")
+                .withOrganizationId( organizationId ).withProductName(
+                "Sorry no licensing information currently available");
+        fallbackList.add(license);
+        return fallbackList;
     }
 
     public void saveLicense(License license){
